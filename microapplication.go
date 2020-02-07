@@ -28,7 +28,7 @@ func (microApp *MicroApplication) RegisterProviders(providers ...providersvc.API
 }
 
 // Execute function starts application with provided configuration
-func (microApp *MicroApplication) Execute(configProvider *config.ConfigProvider) error {
+func (microApp *MicroApplication) Execute(configProvider config.ConfigProvider) error {
 	if configProvider == nil {
 		return fmt.Errorf("configProvider is nil")
 	}
@@ -52,7 +52,15 @@ func (microApp *MicroApplication) Execute(configProvider *config.ConfigProvider)
 		log.Printf("Registered provider: %s", provider.GetInfo().ProviderName)
 	}
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(
+		http.ListenAndServe(
+			configProvider.GetConfigWithDefaultValue("MICROCFG_BIND_ADDR", ":8080"),
+			router,
+			))
 
 	return nil
+}
+
+func NewMicroApplication() *MicroApplication {
+	return &MicroApplication{}
 }
