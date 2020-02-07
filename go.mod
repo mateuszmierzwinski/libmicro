@@ -1,4 +1,4 @@
-module libmicro
+module github.com/mateuszmierzwinski/libmicro
 
 go 1.13
 
