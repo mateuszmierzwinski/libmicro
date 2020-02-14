@@ -1,0 +1,80 @@
+package cmdconfigprovider
+
+import (
+	"github.com/mateuszmierzwinski/libmicro/config"
+	"os"
+	"strings"
+)
+
+// CmdConfigProvider is default config provider that is able to read configuration from command line
+type CmdConfigProvider struct {
+	config map[string]string
+}
+
+// GetConfigByName returns configuration value by provided key or empty string if does not exist
+func (c *CmdConfigProvider) GetConfigByName(configName string) string {
+	if v,ok := c.config[configName]; !ok {
+		return ""
+	} else {
+		return v
+	}
+}
+
+// GetConfigWithDefaultValue returns configuration value by provided key or default value if does not exist
+func (c *CmdConfigProvider) GetConfigWithDefaultValue(configName string, defaultValue string) string {
+	if v,ok := c.config[configName]; !ok {
+		return defaultValue
+	} else {
+		if len(v) == 0 {
+			return defaultValue
+		} else {
+			return v
+		}
+	}
+}
+
+// OverrideWithValue allows to change programatically configuration by key
+func (c *CmdConfigProvider) OverrideWithValue(configName string, valueToSet string) {
+	c.config[configName] = valueToSet
+}
+
+func (c *CmdConfigProvider) initModule(cmd []string) {
+	cmdSz := len(cmd)
+	c.config = make(map[string]string)
+	for i:=1; i<cmdSz; i++ {
+		if strings.HasPrefix(cmd[i], "-") {
+			key := cmd[i]
+			// remove trailing negatives
+			for strings.HasPrefix(key, "-") {
+				key = key[1:]
+			}
+
+			// only negatives case - drop them
+			if len(key) == 0 {
+				continue
+			}
+
+			// try get value
+			if cmdSz > i+1 {
+				// analyze next entry in cmd
+				potentialVal := cmd[i+1]
+
+				// next parameter?
+				if strings.HasPrefix(potentialVal, "-") {
+					c.config[key] = ""
+				} else {
+					c.config[key] = potentialVal
+				}
+			} else {
+				// support of empty key at the end
+				c.config[key] = ""
+			}
+		}
+	}
+}
+
+func New() config.ConfigProvider {
+	c := &CmdConfigProvider{}
+	c.initModule(os.Args)
+	return c
+}
