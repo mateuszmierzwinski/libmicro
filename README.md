@@ -103,7 +103,7 @@ Each of config providers works differently but from application level it gives s
 
 ## QA section
 
-### Q: Why another framework/libirary?
+### Q: Why another framework/library?
 
 A: We would say - for fun - but it's not only that. We made some set of micro services in our past and pattern was mostly the same. We were thinking about extracting this repetitive actions into separated library so we would speed things up a lot by developing only real functionality. Each time we should not care about HTTP server, authorization. We would like to skip directly to write business-case code. This library is somehow allowing us to do so.
 
