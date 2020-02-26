@@ -1,9 +1,9 @@
 GO ?= go
 GOFMT ?= gofmt "-s"
 PACKAGES ?= $(shell $(GO) list ./...)
-VETPACKAGES ?= $(shell $(GO) list ./... | grep -v /examples/)
+VETPACKAGES ?= $(shell $(GO) list ./...)
 GOFILES := $(shell find . -name "*.go")
-TESTFOLDER := $(shell $(GO) list ./... | grep -E 'gin$$|binding$$|render$$' | grep -v examples)
+TESTFOLDER := $(shell $(GO) list ./...)
 TESTTAGS ?= ""
 
 .PHONY: test
