@@ -1,4 +1,8 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/mateuszmierzwinski/libmicro)](https://goreportcard.com/report/github.com/mateuszmierzwinski/libmicro) [![Build Status](https://travis-ci.com/mateuszmierzwinski/libmicro.svg?branch=master)](https://travis-ci.com/mateuszmierzwinski/libmicro) [![codecov](https://codecov.io/gh/mateuszmierzwinski/libmicro/branch/master/graph/badge.svg)](https://codecov.io/gh/mateuszmierzwinski/libmicro)
+[![Go Report Card](https://goreportcard.com/badge/github.com/mateuszmierzwinski/libmicro)](https://goreportcard.com/report/github.com/mateuszmierzwinski/libmicro) 
+[![Build Status](https://travis-ci.com/mateuszmierzwinski/libmicro.svg?branch=master)](https://travis-ci.com/mateuszmierzwinski/libmicro)
+[![codecov](https://codecov.io/gh/mateuszmierzwinski/libmicro/branch/master/graph/badge.svg)](https://codecov.io/gh/mateuszmierzwinski/libmicro)
+[![Release](https://img.shields.io/github/release/mateuszmierzwinski/libmicro.svg?style=flat-square)](https://github.com/mateuszmierzwinski/libmicro/releases)
+[![GoDoc](https://godoc.org/github.com/mateuszmierzwinski/libmicro?status.svg)](https://godoc.org/github.com/mateuszmierzwinski/libmicro)
 
 # LibMicro framework
 
