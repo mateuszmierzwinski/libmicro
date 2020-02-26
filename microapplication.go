@@ -11,7 +11,7 @@ import (
 
 // MicroApplication is application context that stores all providers and middleware
 type MicroApplication struct {
-	providers []providersvc.APIProvider
+	providers  []providersvc.APIProvider
 	middleware []gin.HandlerFunc
 }
 
@@ -21,14 +21,14 @@ func (microApp *MicroApplication) RegisterMiddleware(middleware ...gin.HandlerFu
 	return microApp
 }
 
-// RegisterProvider registers API provider
+// RegisterProviders registers API provider
 func (microApp *MicroApplication) RegisterProviders(providers ...providersvc.APIProvider) *MicroApplication {
 	microApp.providers = append(microApp.providers, providers...)
 	return microApp
 }
 
 // Execute function starts application with provided configuration
-func (microApp *MicroApplication) Execute(configProvider config.ConfigProvider) error {
+func (microApp *MicroApplication) Execute(configProvider config.Provider) error {
 	if configProvider == nil {
 		return fmt.Errorf("configProvider is nil")
 	}
@@ -56,11 +56,12 @@ func (microApp *MicroApplication) Execute(configProvider config.ConfigProvider) 
 		http.ListenAndServe(
 			configProvider.GetConfigWithDefaultValue("MICROCFG_BIND_ADDR", ":8080"),
 			router,
-			))
+		))
 
 	return nil
 }
 
+// NewMicroApplication simplifies building of framework application context
 func NewMicroApplication() *MicroApplication {
 	return &MicroApplication{}
 }

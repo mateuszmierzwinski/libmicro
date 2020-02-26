@@ -1,7 +1,7 @@
 package config
 
-// ConfigProvider is interface for configuration loaders that can read config from different sources
-type ConfigProvider interface {
+// Provider is interface for configuration loaders that can read config from different sources
+type Provider interface {
 
 	// GetConfigByName returns configuration value by provided key or empty string if does not exist
 	GetConfigByName(string) string

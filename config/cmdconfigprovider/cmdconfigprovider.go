@@ -13,24 +13,24 @@ type CmdConfigProvider struct {
 
 // GetConfigByName returns configuration value by provided key or empty string if does not exist
 func (c *CmdConfigProvider) GetConfigByName(configName string) string {
-	if v,ok := c.config[configName]; !ok {
-		return ""
-	} else {
+	if v, ok := c.config[configName]; ok {
 		return v
 	}
+
+	return ""
 }
 
 // GetConfigWithDefaultValue returns configuration value by provided key or default value if does not exist
 func (c *CmdConfigProvider) GetConfigWithDefaultValue(configName string, defaultValue string) string {
-	if v,ok := c.config[configName]; !ok {
-		return defaultValue
-	} else {
+	if v, ok := c.config[configName]; ok {
 		if len(v) == 0 {
 			return defaultValue
-		} else {
-			return v
 		}
+
+		return v
 	}
+
+	return defaultValue
 }
 
 // OverrideWithValue allows to change programatically configuration by key
@@ -41,7 +41,7 @@ func (c *CmdConfigProvider) OverrideWithValue(configName string, valueToSet stri
 func (c *CmdConfigProvider) initModule(cmd []string) {
 	cmdSz := len(cmd)
 	c.config = make(map[string]string)
-	for i:=1; i<cmdSz; i++ {
+	for i := 1; i < cmdSz; i++ {
 		if strings.HasPrefix(cmd[i], "-") {
 			key := cmd[i]
 			// remove trailing negatives
@@ -73,7 +73,8 @@ func (c *CmdConfigProvider) initModule(cmd []string) {
 	}
 }
 
-func New() config.ConfigProvider {
+// New constructs new provider and initializes this module on the fly
+func New() config.Provider {
 	c := &CmdConfigProvider{}
 	c.initModule(os.Args)
 	return c

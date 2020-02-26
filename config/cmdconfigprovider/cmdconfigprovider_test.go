@@ -8,7 +8,7 @@ import (
 
 func TestCmdConfigProviderInitializer(t *testing.T) {
 	c := &CmdConfigProvider{}
-	c.initModule([]string{ "testRunnerApp", "-p", "test0", "--test", "test1", "-t", "-T", "test3", "-", "--"})
+	c.initModule([]string{"testRunnerApp", "-p", "test0", "--test", "test1", "-t", "-T", "test3", "-", "--"})
 
 	assert.Equal(t, "test0", c.GetConfigByName("p"))
 	assert.Equal(t, "test1", c.GetConfigByName("test"))
@@ -19,7 +19,7 @@ func TestCmdConfigProviderInitializer(t *testing.T) {
 
 func TestCmdConfigProviderGetConfigWithDefaultValue(t *testing.T) {
 	c := &CmdConfigProvider{}
-	c.initModule([]string{ "testRunnerApp", "-p", "test0", "--test", "test1", "-t", "-T", "test3", "-", "--", "-s"})
+	c.initModule([]string{"testRunnerApp", "-p", "test0", "--test", "test1", "-t", "-T", "test3", "-", "--", "-s"})
 
 	assert.Equal(t, "", c.GetConfigByName("deep"))
 	assert.Equal(t, "", c.GetConfigByName("s"))
@@ -35,6 +35,6 @@ func TestCmdConfigProviderGetConfigWithDefaultValue(t *testing.T) {
 
 func TestNew(t *testing.T) {
 	c := New()
-	assert.Implements(t, (*config.ConfigProvider)(nil), c)
+	assert.Implements(t, (*config.Provider)(nil), c)
 	assert.NotNil(t, c)
 }

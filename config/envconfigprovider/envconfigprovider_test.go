@@ -8,7 +8,7 @@ import (
 
 func TestEnvConfigProviderInitializer(t *testing.T) {
 	c := &EnvConfigProvider{}
-	c.initModule([]string{ "p=test0", "test=test1", "t=", "T=test3", "somestring", ""})
+	c.initModule([]string{"p=test0", "test=test1", "t=", "T=test3", "somestring", ""})
 
 	assert.Equal(t, "test0", c.GetConfigByName("p"))
 	assert.Equal(t, "test1", c.GetConfigByName("test"))
@@ -20,7 +20,7 @@ func TestEnvConfigProviderInitializer(t *testing.T) {
 
 func TestEnvConfigProviderGetConfigWithDefaultValue(t *testing.T) {
 	c := &EnvConfigProvider{}
-	c.initModule([]string{ "p=test0", "test=test1", "t=", "T=test3", "somestring", ""})
+	c.initModule([]string{"p=test0", "test=test1", "t=", "T=test3", "somestring", ""})
 
 	assert.Equal(t, "", c.GetConfigByName("deep"))
 	assert.Equal(t, "", c.GetConfigByName("somestring"))
@@ -36,6 +36,6 @@ func TestEnvConfigProviderGetConfigWithDefaultValue(t *testing.T) {
 
 func TestNew(t *testing.T) {
 	c := New()
-	assert.Implements(t, (*config.ConfigProvider)(nil), c)
+	assert.Implements(t, (*config.Provider)(nil), c)
 	assert.NotNil(t, c)
 }

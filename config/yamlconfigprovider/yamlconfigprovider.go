@@ -18,24 +18,24 @@ type YamlConfigProvider struct {
 
 // GetConfigByName returns configuration value by provided key or empty string if does not exist
 func (c *YamlConfigProvider) GetConfigByName(configName string) string {
-	if v,ok := c.config[configName]; !ok {
-		return ""
-	} else {
+	if v, ok := c.config[configName]; ok {
 		return v
 	}
+
+	return ""
 }
 
 // GetConfigWithDefaultValue returns configuration value by provided key or default value if does not exist
 func (c *YamlConfigProvider) GetConfigWithDefaultValue(configName string, defaultValue string) string {
-	if v,ok := c.config[configName]; !ok {
-		return defaultValue
-	} else {
+	if v, ok := c.config[configName]; ok {
 		if len(v) == 0 {
 			return defaultValue
-		} else {
-			return v
 		}
+
+		return v
 	}
+
+	return defaultValue
 }
 
 // OverrideWithValue allows to change programatically configuration by key
@@ -44,33 +44,33 @@ func (c *YamlConfigProvider) OverrideWithValue(configName string, valueToSet str
 }
 
 func (c *YamlConfigProvider) loadYamlFromPath() error {
-	appDir,_ := filepath.Abs(os.Args[0])
+	appDir, _ := filepath.Abs(os.Args[0])
 	appName := strings.ToLower(filepath.Base(os.Args[0]))
-	wd,_ := os.Getwd()
-	ud,_ := os.UserConfigDir()
-	pd,_ := os.UserHomeDir()
+	wd, _ := os.Getwd()
+	ud, _ := os.UserConfigDir()
+	pd, _ := os.UserHomeDir()
 
-	paths := []string {
-		filepath.Join(wd, appName + ".yaml"),
-		filepath.Join(filepath.Dir(appDir), appName + ".yaml"),
-		filepath.Join(ud, appName + ".yaml"),
-		filepath.Join(pd, ".config", appName, appName + ".yaml"),
+	paths := []string{
+		filepath.Join(wd, appName+".yaml"),
+		filepath.Join(filepath.Dir(appDir), appName+".yaml"),
+		filepath.Join(ud, appName+".yaml"),
+		filepath.Join(pd, ".config", appName, appName+".yaml"),
 	}
 
-	for _,path := range paths {
-		if _,err := os.Lstat(path); err == nil {
+	for _, path := range paths {
+		if _, err := os.Lstat(path); err == nil {
 			log.Println("-- Found configuration to load in:", path)
 			return c.yamlLoad(path)
-		} else {
-			log.Println("-- Configuration not found in:", path)
 		}
+
+		log.Println("-- Configuration not found in:", path)
 	}
 
 	return errors.New("cannot find valid configuration in any of expected and listed above files")
 }
 
 func (c *YamlConfigProvider) yamlLoad(yamlPath string) error {
-	pulledData,err := ioutil.ReadFile(yamlPath)
+	pulledData, err := ioutil.ReadFile(yamlPath)
 	if err != nil {
 		return err
 	}
@@ -94,7 +94,8 @@ func (c *YamlConfigProvider) initFromFile() error {
 	return nil
 }
 
-func New() config.ConfigProvider {
+// New constructs new provider and initializes this module on the fly
+func New() config.Provider {
 	c := &YamlConfigProvider{}
 
 	err := c.initFromFile()

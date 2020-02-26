@@ -14,19 +14,19 @@ import (
 )
 
 var testCases = []struct {
-	f func(c *YamlConfigProvider) error
+	f        func(c *YamlConfigProvider) error
 	expected error
 }{
 	{
-		f : func(c *YamlConfigProvider) error {
+		f: func(c *YamlConfigProvider) error {
 			return c.initFromFile()
 		},
 		expected: errors.New("cannot find valid configuration in any of expected and listed above files"),
 	}, {
-		f : func(c *YamlConfigProvider) error {
-			appDir,_ := filepath.Abs(os.Args[0])
+		f: func(c *YamlConfigProvider) error {
+			appDir, _ := filepath.Abs(os.Args[0])
 			appName := strings.ToLower(filepath.Base(os.Args[0]))
-			path := filepath.Join(filepath.Dir(appDir), appName + ".yaml")
+			path := filepath.Join(filepath.Dir(appDir), appName+".yaml")
 
 			bb := bytes.NewBuffer([]byte{})
 			bb.WriteString("config_a: value\n")
@@ -46,7 +46,7 @@ var testCases = []struct {
 		},
 		expected: nil,
 	}, {
-		f : func(c *YamlConfigProvider) error {
+		f: func(c *YamlConfigProvider) error {
 			if c.GetConfigByName("config_a") != "value" {
 				return errors.New("config_a != value")
 			}
@@ -55,7 +55,7 @@ var testCases = []struct {
 		},
 		expected: nil,
 	}, {
-		f : func(c *YamlConfigProvider) error {
+		f: func(c *YamlConfigProvider) error {
 			if c.GetConfigByName("config_b") != "value" {
 				return errors.New("config_b != value")
 			}
@@ -64,7 +64,7 @@ var testCases = []struct {
 		},
 		expected: nil,
 	}, {
-		f : func(c *YamlConfigProvider) error {
+		f: func(c *YamlConfigProvider) error {
 			if c.GetConfigByName("config_c") != "10" {
 				return errors.New("config_c != 10")
 			}
@@ -73,7 +73,7 @@ var testCases = []struct {
 		},
 		expected: nil,
 	}, {
-		f : func(c *YamlConfigProvider) error {
+		f: func(c *YamlConfigProvider) error {
 			if c.GetConfigByName("config_d") != "10" {
 				return errors.New("config_d != 10")
 			}
@@ -81,7 +81,7 @@ var testCases = []struct {
 		},
 		expected: nil,
 	}, {
-		f : func(c *YamlConfigProvider) error {
+		f: func(c *YamlConfigProvider) error {
 			if c.GetConfigByName("config_e") != "" {
 				return errors.New("config_d is not empty")
 			}
@@ -89,7 +89,7 @@ var testCases = []struct {
 		},
 		expected: nil,
 	}, {
-		f : func(c *YamlConfigProvider) error {
+		f: func(c *YamlConfigProvider) error {
 			c.OverrideWithValue("config_e", "alpha")
 			if c.GetConfigByName("config_e") != "alpha" {
 				return errors.New("config_d is not equal alpha")
@@ -98,7 +98,7 @@ var testCases = []struct {
 		},
 		expected: nil,
 	}, {
-		f : func(c *YamlConfigProvider) error {
+		f: func(c *YamlConfigProvider) error {
 			c.OverrideWithValue("config_b", "beta")
 			if c.GetConfigByName("config_b") != "beta" {
 				return errors.New("config_b is not equal beta")
@@ -111,10 +111,10 @@ var testCases = []struct {
 
 func TestYamlConfigProviderInitializer(t *testing.T) {
 	c := &YamlConfigProvider{}
-	assert.Implements(t, (*config.ConfigProvider)(nil), c)
+	assert.Implements(t, (*config.Provider)(nil), c)
 	assert.NotNil(t, c)
 
-	for _,tc := range testCases {
+	for _, tc := range testCases {
 		exp := tc.f(c)
 		assert.Equal(t, tc.expected, exp)
 	}

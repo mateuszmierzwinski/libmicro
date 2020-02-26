@@ -12,5 +12,5 @@ type APIProvider interface {
 	GetInfo() *APIInfo
 
 	// Register registers provider in provided router engine with config provided
-	Register(router *gin.Engine, configProvider config.ConfigProvider)
+	Register(router *gin.Engine, configProvider config.Provider)
 }
